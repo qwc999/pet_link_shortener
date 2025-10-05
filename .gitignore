@@ -1,0 +1,10 @@
+.venv/
+
+__pycache__/
+.idea/
+*.iml
+
+.env
+
+collect_all_files_in_txt.py
+project_contents.txt
