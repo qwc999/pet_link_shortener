@@ -1,5 +1,7 @@
 import os
-from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from pydantic_settings import BaseSettings
+from pydantic_settings import SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -20,5 +22,5 @@ settings = Settings()
 def get_db_url():
     return (
         f"postgresql+asyncpg://{settings.DB_USER}:{settings.DB_PASSWORD}@"
-        "{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
+        f"{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
     )
