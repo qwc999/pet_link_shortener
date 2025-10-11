@@ -3,3 +3,6 @@ up:
 
 down:
 	docker-compose -f docker-compose-local.yaml down
+
+downv:
+	docker-compose -f docker-compose-local.yaml down -v

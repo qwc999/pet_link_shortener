@@ -12,6 +12,10 @@ services:
       - "5433:5432"
     networks:
       - custom
+    volumes:
+      - db_data:/var/lib/postgresql/data
 networks:
   custom:
     driver: bridge
+volumes:
+  db_data:

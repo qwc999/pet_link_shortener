@@ -1,8 +1,11 @@
 import uvicorn
 from fastapi import FastAPI
 
+from app.routers.link import link_router
+
 
 app = FastAPI()
+app.include_router(link_router, tags=["link"])
 
 
 @app.get('/')

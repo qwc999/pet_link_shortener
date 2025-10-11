@@ -14,9 +14,7 @@ sys.path.insert(0, dirname(dirname(abspath(__file__))))
 
 from app.database import DATABASE_URL, Base
 
-# from app.models.link import Link
-# from app.models.user import User
-# from app.models.click import Click
+import app.models
 
 config = context.config
 config.set_main_option("sqlalchemy.url", DATABASE_URL.replace("+asyncpg", ""))

@@ -15,7 +15,7 @@ class Link(Base):
     __tablename__ = "links"
     id = Column(Integer, primary_key=True)
     original_url = Column(Text, nullable=False)
-    short_url = Column(Text, unique=True, index=True)
+    short_code = Column(Text, unique=True, index=True)
     owner_id = Column(Integer, ForeignKey("users.id"))
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)

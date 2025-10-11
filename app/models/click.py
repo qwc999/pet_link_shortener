@@ -16,8 +16,8 @@ class Click(Base):
     link_id = Column(Integer, ForeignKey("links.id"))
     clicked_at = Column(DateTime, default=datetime.utcnow)
     is_active = Column(Boolean, default=True)
-    link = relationship("Link", back_populates="clicks")
 
+    link = relationship("Link", back_populates="clicks")
     # ip_address = Column(String(15))
     # country = Column(String(2))
     # browser = Column(String(15))

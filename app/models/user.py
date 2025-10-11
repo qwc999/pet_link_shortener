@@ -18,4 +18,4 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     is_active = Column(Boolean, default=True)
 
-    links = relationship("Link", back_populates="owner_id")
+    links = relationship("Link", back_populates="owner")
