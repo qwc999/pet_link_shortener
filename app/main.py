@@ -2,10 +2,12 @@ import uvicorn
 from fastapi import FastAPI
 
 from app.routers.link import link_router
+from app.routers.redirect import redirect_router
 
 
 app = FastAPI()
 app.include_router(link_router, tags=["link"])
+app.include_router(redirect_router)
 
 
 @app.get('/')

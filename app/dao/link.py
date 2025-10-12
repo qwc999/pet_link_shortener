@@ -38,3 +38,10 @@ class LinkDAO:
         )
         await self.db.commit()
         return await self.get_link_by_link_id(link_id)
+
+    async def get_link_for_redirect(self, short_code):
+        result = await self.db.execute(
+            select(Link).where(Link.short_code == short_code,
+                               Link.is_active == True)
+        )
+        return result.scalar_one_or_none()

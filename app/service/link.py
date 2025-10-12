@@ -43,3 +43,6 @@ class LinkService:
             return LinkResponse.model_validate(link_data)
         else:
             return None
+
+    async def get_link_for_redirect(self, short_code):
+        return await self.link_dao.get_link_for_redirect(short_code)
