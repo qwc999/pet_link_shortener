@@ -16,6 +16,7 @@ link_router = APIRouter(prefix="/links")
 async def get_my_links(
         db: AsyncSession = Depends(get_db),
         current_user: User = Depends(get_current_user)):
+    # todo : пагинация
     return await LinkService(db).get_user_links(current_user.id)
 
 @link_router.post("/", response_model=LinkResponse, summary="Создать ссылку")
