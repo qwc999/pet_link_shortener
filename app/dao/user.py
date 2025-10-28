@@ -32,5 +32,5 @@ class UserDAO:
         )
         return result.scalar_one_or_none()
 
-    async def deactivate(self, user_id):
+    async def deactivate_user(self, user_id):
         return await self.update(user_id, {"is_active": False})
