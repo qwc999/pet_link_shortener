@@ -7,9 +7,9 @@ from app.routers.auth import auth_router
 
 
 app = FastAPI()
+app.include_router(auth_router, tags=["auth"])
 app.include_router(link_router, tags=["link"])
 app.include_router(redirect_router)
-app.include_router(auth_router, tags=["auth"])
 
 
 @app.get('/')

@@ -1,5 +1,3 @@
-from enum import verify
-
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.dao.user import UserDAO
 from app.schemas.user import UserCreate, UserResponse, UserLogin
@@ -27,4 +25,7 @@ class UserService:
         if not verify_password(user_data.password, user.password):
             return None
         return UserResponse.model_validate(user)
+
+    async def get_user_by_user_id_for_auth(self, user_id: int):
+        return await self.user_dao.get_user_by_id(user_id)
 
