@@ -3,6 +3,7 @@ import string
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.dao.click import ClickDAO
 from app.dao.link import LinkDAO
 from app.schemas.link import LinkResponse, LinkCreate, LinkDelete
 
