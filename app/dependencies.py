@@ -25,6 +25,8 @@ async def get_current_user(
         user = await UserService(db).get_user_by_user_id_for_auth(user_id)
         if not user:
             raise credentials_exception
+        if not user.is_active:
+            raise credentials_exception
         return user
     except JWTError:
         raise credentials_exception

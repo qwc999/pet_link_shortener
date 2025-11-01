@@ -18,9 +18,11 @@ class UserService:
         result = await self.user_dao.create_user(data)
         return UserResponse.model_validate(result)
 
-    async def authenticate_user(self, user_data: UserLogin):
+    async def authenticate_user(self, user_data: UserLogin) -> UserResponse | None:
         user = await self.user_dao.get_user_by_email(user_data.email)
         if not user:
+            return None
+        if not user.is_active:
             return None
         if not verify_password(user_data.password, user.password):
             return None
@@ -37,7 +39,6 @@ class UserService:
 
     async def update_user(self, user_id: int, data: UserUpdate) -> UserResponse | None:
         update_dict = data.model_dump(exclude_unset=True)   # удаляет None
-        # todo : проверка валидный ли пароль не работает
         if "password" in update_dict:
             update_dict["password"] = get_hash(update_dict["password"])
         if "email" in update_dict:

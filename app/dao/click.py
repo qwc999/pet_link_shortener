@@ -15,6 +15,6 @@ class ClickDAO:
         await self.db.refresh(click)
         return click
 
-    async def get_clicks_by_link_id(self, link_id: int):
+    async def get_clicks_by_link_id(self, link_id: int) -> list[Click] | None:
         clicks = await self.db.execute(Select(Click).where(Click.link_id == link_id))
         return clicks.scalars().all()

@@ -8,7 +8,6 @@ from app.service.user import UserService
 
 user_router = APIRouter()
 
-# todo : запретить удаленным пользователям действия
 
 @user_router.get("/me", response_model=UserResponse, summary="Получение своего профиля")
 async def get_me(

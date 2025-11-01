@@ -1,4 +1,5 @@
 from sqlalchemy import select, update
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.link import Link
@@ -8,22 +9,25 @@ class LinkDAO:
     def __init__(self, db: AsyncSession):
         self.db = db
 
-    async def create_link(self, link_dict):
-        link = Link(**link_dict)
-        self.db.add(link)
-        await self.db.commit()
-        await self.db.refresh(link)
-        return link
+    async def create_link(self, link_dict) -> Link | None:
+        try:
+            link = Link(**link_dict)
+            self.db.add(link)
+            await self.db.commit()
+            await self.db.refresh(link)
+            return link
+        except IntegrityError:
+            await self.db.rollback()
 
 
-    async def get_user_links(self, user_id):
+    async def get_user_links(self, user_id) -> list[Link] | None:
         result = await self.db.execute(
             select(Link).where(Link.owner_id == user_id)
         )
         links = result.scalars().all()
         return links
 
-    async def get_link_by_link_id(self, link_id):
+    async def get_link_by_link_id(self, link_id) -> Link | None:
         result = await self.db.execute(
             select(Link).where(Link.id == link_id)
         )
@@ -32,14 +36,14 @@ class LinkDAO:
     async def deactivate(self, link_id):
         return await self.update(link_id, {"is_active": False})
 
-    async def update(self, link_id, update_data):
+    async def update(self, link_id, update_data) -> Link | None:
         await self.db.execute(
             update(Link).where(Link.id == link_id).values(**update_data)
         )
         await self.db.commit()
         return await self.get_link_by_link_id(link_id)
 
-    async def get_link_for_redirect(self, short_code):
+    async def get_link_for_redirect(self, short_code) -> Link | None:
         result = await self.db.execute(
             select(Link).where(Link.short_code == short_code,
                                Link.is_active == True)

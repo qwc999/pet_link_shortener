@@ -32,6 +32,15 @@ class UserUpdate(BaseModel):
     email: Optional[EmailStr] = None
     password: Optional[str] = None
 
+    @field_validator("password")
+    @classmethod
+    def validate_password(cls, v):
+        if len(v) < 6:
+            raise ValueError("Password is too short")
+        if len(v.encode("utf-8")) > 72:
+            raise ValueError("Password is too long")
+        return v
+
 class Token(BaseModel):
     access_token: str
     token_type: str

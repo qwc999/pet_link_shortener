@@ -15,6 +15,12 @@ class Settings(BaseSettings):
     ALGORITHM: str
     TEST_DB_PORT: int
     TEST_DB_NAME: str
+    REDIS_HOST: str
+    REDIS_PORT: int
+    REDIS_DB: int
+    REDIS_PASSWORD: str
+    DATA_CACHE_TTL: int
+    USER_CACHE_TTL: int
 
     model_config = SettingsConfigDict(
         env_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".env")
