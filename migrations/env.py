@@ -7,6 +7,8 @@ from alembic import context
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
+from app.config import get_test_db_url
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 
@@ -17,10 +19,14 @@ from app.database import DATABASE_URL, Base
 import app.models
 
 config = context.config
+
+# MAIN DB
 config.set_main_option("sqlalchemy.url", DATABASE_URL.replace("+asyncpg", ""))
+# TEST DB
+# config.set_main_option("sqlalchemy.url", get_test_db_url().replace("+asyncpg", ""))
+
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
-
 target_metadata = Base.metadata
 
 # Interpret the config file for Python logging.

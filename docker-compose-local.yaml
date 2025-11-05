@@ -14,6 +14,20 @@ services:
       - custom
     volumes:
       - db_data:/var/lib/postgresql/data
+  test_db:
+    container_name: "test_db"
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${TEST_DB_NAME}
+    ports:
+      - "5434:5432"
+    networks:
+      - custom
+    volumes:
+      - test_db_data:/var/lib/postgresql/data
   redis:
     container_name: "redis"
     image: redis:7-alpine
@@ -36,3 +50,4 @@ networks:
 volumes:
   db_data:
   redis_data:
+  test_db_data:
