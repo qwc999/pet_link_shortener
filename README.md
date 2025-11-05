@@ -1,11 +1,18 @@
-1) Накатывание миграций
-alembic init migrations
+1) Накатывание миграций  
+alembic init migrations  
 
 
-2) alembic:
-alembic revision --autogenerate -m "comment"
-alembic upgrade head
+2) alembic:  
+alembic revision --autogenerate -m "comment"  
+alembic upgrade head  
 
 
-3) пре коммит хуки выключить / включить
-pre-commit uninstall / install
+3) пре коммит хуки выключить / включить  
+pre-commit uninstall / install  
+
+
+4) проверка redis  
+docker exec -it redis sh  
+redis-cli  
+AUTH *******  
+keys *  

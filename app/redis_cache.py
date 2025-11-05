@@ -14,5 +14,17 @@ class RedisCache:
             encoding = "utf-8")
         await self.redis_client.ping()
 
+    async def close_redis(self):
+        if self.redis_client:
+            await self.redis_client.close()
+
+    async def set(self, key: str, value: str, expires: int = settings.DATA_CACHE_TTL):
+        return await self.redis_client.setex(key, expires, value)
+
+    async def get(self, key: str):
+        return await self.redis_client.get(key)
+
+    async def delete(self, key: str):
+        return await self.redis_client.delete(key)
 
 redis_cache = RedisCache()

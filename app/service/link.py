@@ -47,14 +47,8 @@ class LinkService:
             return None
 
     async def get_link_by_id(self, link_id: int, current_user_id: int) -> LinkResponse | None:
-        link_from_cache = await self.link_redis.get_link_by_id(link_id)
-        if link_from_cache:
-            if link_from_cache.owner_id == current_user_id:
-                return LinkResponse.model_validate(link_from_cache)
-            return None
         link_data = await self.link_dao.get_link_by_link_id(link_id)
         if link_data and link_data.owner_id == current_user_id:
-            await self.link_redis.set_link(link_data)
             return LinkResponse.model_validate(link_data)
         return None
 
