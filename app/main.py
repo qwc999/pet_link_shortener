@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 import uvicorn
 from fastapi import FastAPI
 from app.redis_cache import redis_cache
+from app.routers.admin import admin_router
 from app.routers.link import link_router
 from app.routers.redirect import redirect_router
 from app.routers.auth import auth_router
@@ -19,6 +20,7 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(auth_router, tags=["auth"])
 app.include_router(user_router, tags=["user"])
 app.include_router(link_router, tags=["link"])
+app.include_router(admin_router, tags=["admin"])
 app.include_router(redirect_router)
 
 

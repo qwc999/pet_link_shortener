@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.dao.user import UserDAO
+from app.models.user import PortalRoles
 from app.schemas.user import UserCreate, UserResponse, UserLogin, UserUpdate
 from app.utils.security import get_hash, verify_password
 
@@ -28,7 +29,7 @@ class UserService:
             return None
         return UserResponse.model_validate(user)
 
-    async def get_user_by_user_id_for_auth(self, user_id: int):
+    async def get_user_by_user_id(self, user_id: int):
         return await self.user_dao.get_user_by_id(user_id)
 
     async def deactivate_user(self, user_id: int) -> UserResponse | None:
@@ -48,4 +49,20 @@ class UserService:
         updated_user = await self.user_dao.update(user_id, update_dict)
         if not updated_user:
             return None
+        return UserResponse.model_validate(updated_user)
+
+    async def add_user_role(self, user_id: int, role: PortalRoles) -> UserResponse | None:
+        user = await self.user_dao.get_user_by_id(user_id)
+        if not user:
+            return None
+        user.add_role(role)
+        updated_user = await self.user_dao.update_user_roles(user_id, user.roles)
+        return UserResponse.model_validate(updated_user)
+
+    async def remove_user_role(self, user_id: int, role: PortalRoles) -> UserResponse | None:
+        user = await self.user_dao.get_user_by_id(user_id)
+        if not user:
+            return None
+        user.remove_role(role)
+        updated_user = await self.user_dao.update_user_roles(user_id, user.roles)
         return UserResponse.model_validate(updated_user)

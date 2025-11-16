@@ -2,6 +2,7 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import User
+from app.models.user import PortalRoles
 
 
 class UserDAO:
@@ -34,3 +35,6 @@ class UserDAO:
 
     async def deactivate_user(self, user_id) -> User | None:
         return await self.update(user_id, {"is_active": False})
+
+    async def update_user_roles(self, user_id, roles: list[PortalRoles]) -> User | None:
+        return await self.update(user_id, {"roles": roles})

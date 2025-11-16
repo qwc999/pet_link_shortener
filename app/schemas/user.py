@@ -1,12 +1,10 @@
 from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel, EmailStr, field_validator
+from app.models.user import PortalRoles
 
 
-class UserCreate(BaseModel):
-    email: EmailStr
-    password: str
-
+class UserBase:
     @field_validator("password")
     @classmethod
     def validate_password(cls, v):
@@ -15,6 +13,10 @@ class UserCreate(BaseModel):
         if len(v.encode("utf-8")) > 72:
             raise ValueError("Password is too long")
         return v
+
+class UserCreate(BaseModel, UserBase):
+    email: EmailStr
+    password: str
 
 class UserResponse(BaseModel):
     id: int
@@ -28,18 +30,9 @@ class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
-class UserUpdate(BaseModel):
+class UserUpdate(BaseModel, UserBase):
     email: Optional[EmailStr] = None
     password: Optional[str] = None
-
-    @field_validator("password")
-    @classmethod
-    def validate_password(cls, v):
-        if len(v) < 6:
-            raise ValueError("Password is too short")
-        if len(v.encode("utf-8")) > 72:
-            raise ValueError("Password is too long")
-        return v
 
 class Token(BaseModel):
     access_token: str
