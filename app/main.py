@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 import uvicorn
 from fastapi import FastAPI
 from app.redis_cache import redis_cache
+from app.rabbitmq.rabbitmq import rabbitmq_service
 from app.routers.admin import admin_router
 from app.routers.link import link_router
 from app.routers.redirect import redirect_router
@@ -12,8 +13,10 @@ from app.routers.user import user_router
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     await redis_cache.init_redis()
+    await rabbitmq_service.init_rabbit()
     yield
     await redis_cache.close_redis()
+    await rabbitmq_service.close_rabbit()
 
 
 app = FastAPI(lifespan=lifespan)

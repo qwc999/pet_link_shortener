@@ -18,6 +18,7 @@ class LinkDelete(BaseModel):
 
 class LinkCreate(BaseModel):
     original_url: HttpUrl
+
     # mode=before позволяет выполнить валидацию и только потом переделать в объект HttpUrl
     @field_validator("original_url", mode="before")
     @classmethod

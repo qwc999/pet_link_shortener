@@ -1,6 +1,9 @@
+import asyncio
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.dao.user import UserDAO
 from app.models.user import PortalRoles
+from app.rabbitmq.rabbitmq import rabbitmq_service
 from app.schemas.user import UserCreate, UserResponse, UserLogin, UserUpdate
 from app.utils.security import get_hash, verify_password
 
@@ -36,6 +39,11 @@ class UserService:
         deleted_user = await self.user_dao.deactivate_user(user_id)
         if not deleted_user:
             return None
+
+        asyncio.create_task(
+            self._publish_user_deleted_event(deleted_user.id, deleted_user.email)
+        )
+
         return UserResponse.model_validate(deleted_user)
 
     async def update_user(self, user_id: int, data: UserUpdate) -> UserResponse | None:
@@ -66,3 +74,7 @@ class UserService:
         user.remove_role(role)
         updated_user = await self.user_dao.update_user_roles(user_id, user.roles)
         return UserResponse.model_validate(updated_user)
+
+    @staticmethod
+    async def _publish_user_deleted_event(user_id: int, user_email: str):
+        await rabbitmq_service.publish_user_deleted(user_id, user_email)

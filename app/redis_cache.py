@@ -4,6 +4,9 @@ from app.config import settings
 
 
 class RedisCache:
+    def __init__(self):
+        self.redis_client = None
+
     async def init_redis(self):
         self.redis_client = redis.Redis(
             host=settings.REDIS_HOST,

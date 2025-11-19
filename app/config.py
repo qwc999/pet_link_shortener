@@ -21,6 +21,11 @@ class Settings(BaseSettings):
     REDIS_PASSWORD: str
     DATA_CACHE_TTL: int
     USER_CACHE_TTL: int
+    RABBITMQ_HOST: str
+    RABBITMQ_PORT: int
+    RABBITMQ_USER: str
+    RABBITMQ_PASSWORD: str
+    RABBITMQ_VHOST: str
 
     model_config = SettingsConfigDict(
         env_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".env")

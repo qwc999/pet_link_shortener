@@ -47,6 +47,19 @@ services:
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - custom
 
 
 networks:
@@ -56,3 +69,4 @@ volumes:
   db_data:
   redis_data:
   test_db_data:
+  rabbitmq_data:
