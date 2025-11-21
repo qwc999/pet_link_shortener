@@ -1,6 +1,8 @@
+import asyncio
 from contextlib import asynccontextmanager
 import uvicorn
 from fastapi import FastAPI
+from app.rabbitmq.consumers.user_cleanup_consumer import user_cleanup_consumer
 from app.redis_cache import redis_cache
 from app.rabbitmq.rabbitmq import rabbitmq_service
 from app.routers.admin import admin_router
@@ -14,7 +16,18 @@ from app.routers.user import user_router
 async def lifespan(_app: FastAPI):
     await redis_cache.init_redis()
     await rabbitmq_service.init_rabbit()
+
+    consumer_task = asyncio.create_task(user_cleanup_consumer.start_consuming())
+
     yield
+
+    await user_cleanup_consumer.stop_consuming()
+    consumer_task.cancel()
+    try:
+        await consumer_task
+    except asyncio.CancelledError:
+        pass
+
     await redis_cache.close_redis()
     await rabbitmq_service.close_rabbit()
 

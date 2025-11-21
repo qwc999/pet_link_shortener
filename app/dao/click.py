@@ -1,4 +1,4 @@
-from sqlalchemy import Select
+from sqlalchemy import Select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import Click
@@ -18,3 +18,10 @@ class ClickDAO:
     async def get_clicks_by_link_id(self, link_id: int) -> list[Click] | None:
         clicks = await self.db.execute(Select(Click).where(Click.link_id == link_id))
         return clicks.scalars().all()
+
+    async def delete_clicks_by_link_id(self, link_id):
+        """user cleanup
+        коммит происходит на уровне транзакции"""
+        await self.db.execute(
+            delete(Click).where(Click.link_id == link_id)
+        )

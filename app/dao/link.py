@@ -1,4 +1,4 @@
-from sqlalchemy import select, update
+from sqlalchemy import select, update, delete
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -49,3 +49,10 @@ class LinkDAO:
                                Link.is_active == True)
         )
         return result.scalar_one_or_none()
+
+    async def delete_links_by_user_id(self, user_id: int):
+        """user cleanup
+        коммит происходит на уровне транзакции"""
+        await self.db.execute(
+            delete(Link).where(Link.owner_id == user_id)
+        )
