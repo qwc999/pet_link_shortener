@@ -18,6 +18,7 @@ async def lifespan(_app: FastAPI):
     await rabbitmq_service.init_rabbit()
 
     consumer_task = asyncio.create_task(user_cleanup_consumer.start_consuming())
+    print("Consumer started")
 
     yield
 
@@ -26,7 +27,7 @@ async def lifespan(_app: FastAPI):
     try:
         await consumer_task
     except asyncio.CancelledError:
-        pass
+        print("Consumer stopped")
 
     await redis_cache.close_redis()
     await rabbitmq_service.close_rabbit()

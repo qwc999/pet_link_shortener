@@ -1,8 +1,5 @@
-import asyncio
 import json
-
 import aio_pika
-
 from app.config import settings
 from app.database import async_session
 from app.service.user_cleanup import UserCleanupService
@@ -55,13 +52,3 @@ class UserCleanupConsumer:
 
 
 user_cleanup_consumer = UserCleanupConsumer()
-
-
-async def main():
-    print("Consumer started")
-    await user_cleanup_consumer.start_consuming()
-
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
