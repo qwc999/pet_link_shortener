@@ -10,3 +10,7 @@ collect_all_files_in_txt.py
 project_contents.txt
 
 /migrations/versions/*
+
+/elk/elasticsearch/data/*
+/elk/logstash/data/*
+*.log
