@@ -67,7 +67,7 @@ services:
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+ParallelRefProcEnabled -XX:+UnlockDiagnosticVMOptions -XX:+PrintGC -XX:+PrintGCDetails"
       - bootstrap.memory_lock=true
       - network.host=0.0.0.0
       - http.port=9200
@@ -105,7 +105,7 @@ services:
       - ./elk/logstash/pipeline:/usr/share/logstash/pipeline
       - logstash_data:/usr/share/logstash/data
     environment:
-      - LS_JAVA_OPTS=-Xmx256m -Xms256m
+      - LS_JAVA_OPTS=-Xmx256m -Xms256m -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+ParallelRefProcEnabled
     depends_on:
       - elasticsearch
     networks:

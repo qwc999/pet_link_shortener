@@ -17,7 +17,7 @@ class LinkService:
         return ''.join(secrets.choice(alphabet) for _ in range(length))
 
     async def create_link(self, link_data: LinkCreate, current_user_id: int) -> LinkResponse:
-        max_attempts = 10
+        max_attempts = 100
         for i in range(max_attempts):
             short_code = self._generate_short_code()
             data = {"original_url": str(link_data.original_url),
