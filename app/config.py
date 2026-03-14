@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     RABBITMQ_USER: str
     RABBITMQ_PASSWORD: str
     RABBITMQ_VHOST: str
+    PROMETHEUS_METRICS_ENDPOINT: str
+    PROMETHEUS_METRICS_PORT: int
 
     model_config = SettingsConfigDict(
         env_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".env")
